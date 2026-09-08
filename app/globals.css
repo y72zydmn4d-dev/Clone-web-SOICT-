@@ -1,0 +1,35 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark-site, .dark-site *));
+
+@theme {
+  --color-ink: #102542;
+  --color-paper: #f7f9fc;
+  --color-brand: #b51f2a;
+  --color-sky: #e7f2ff;
+  --font-sans: Arial, Helvetica, sans-serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body { background: #f7f9fc; color: #102542; font-family: Arial, Helvetica, sans-serif; }
+body:has(.dark-site) { background: #091525; }
+.container-site { width: min(1180px, calc(100% - 40px)); margin-inline: auto; }
+.surface { background: rgba(255,255,255,.84); border: 1px solid rgba(16,37,66,.09); box-shadow: 0 14px 40px rgba(16,37,66,.06); }
+.dark-site .surface { background: rgba(14,31,53,.88); border-color: rgba(255,255,255,.1); box-shadow: none; }
+.dark-site { color: #edf5ff; }
+.dark-site .muted { color: #aebfd2; }
+.dark-site .paper { background: #091525; }
+.dark-site .line { border-color: rgba(255,255,255,.11); }
+.dark-site input, .dark-site select { background:#10233b; color:#edf5ff; border-color:#28435f; }
+.eyebrow { letter-spacing: .16em; text-transform: uppercase; font-size: .68rem; font-weight: 800; color: #b51f2a; }
+.section-space { padding-block: 88px; }
+.hero-grid { background-image: linear-gradient(rgba(18,49,83,.08) 1px, transparent 1px), linear-gradient(90deg, rgba(18,49,83,.08) 1px, transparent 1px); background-size: 42px 42px; }
+.dark-site .hero-grid { background-image: linear-gradient(rgba(205,229,255,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(205,229,255,.07) 1px, transparent 1px); }
+.image-shade { background: linear-gradient(135deg, #15345b 0%, #0a1c35 60%, #b51f2a 180%); }
+.card-hover { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.card-hover:hover { transform: translateY(-5px); box-shadow: 0 18px 42px rgba(16,37,66,.12); border-color: rgba(181,31,42,.3); }
+.fade-in { animation: fade .55s ease both; }
+@keyframes fade { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+.prose-academic p { margin-bottom: 1.05rem; line-height: 1.8; color: #526477; }
+.dark-site .prose-academic p { color:#b8c7d7; }
+.prose-academic h2 { margin-top: 2rem; margin-bottom: .7rem; font-size: 1.35rem; font-weight: 700; }
