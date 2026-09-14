@@ -1,3 +1,26 @@
-"use client";
-import Link from "next/link"; import { useParams } from "next/navigation"; import { ArrowLeft, CalendarDays, Clock, MapPin, Users } from "lucide-react"; import { events } from "@/data/events"; import { EventCard, FavoriteButton, formatDate } from "@/components/ui";
-export default function EventDetail(){const {id}=useParams<{id:string}>();const item=events.find(x=>x.id===Number(id));if(!item)return <main className="container-site section-space"><h1 className="text-3xl font-bold">Event not found</h1><Link className="mt-5 inline-flex text-brand" href="/events">Back to events</Link></main>;return <article className="container-site py-12"><Link href="/events" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-brand"><ArrowLeft size={16}/>All events</Link><div className="grid gap-9 lg:grid-cols-[1.2fr_.8fr]"><div><p className="eyebrow">{item.category}</p><h1 className="mt-4 text-4xl font-bold tracking-tight md:text-6xl">{item.title}</h1><div className="mt-8 overflow-hidden rounded-3xl image-shade"><img src={item.image} alt="" className="h-72 w-full object-cover opacity-75 md:h-96"/></div><div className="prose-academic mt-8"><p>{item.description}</p><p>This event is a space for people to exchange knowledge, test new ideas and make meaningful connections across our community.</p></div></div><aside className="surface h-fit rounded-2xl p-6"><div className="flex items-start justify-between"><h2 className="text-xl font-bold">Event details</h2><FavoriteButton type="events" id={item.id}/></div><div className="mt-6 space-y-5 text-sm">{[[CalendarDays,"Date",formatDate(item.date)],[Clock,"Time",item.time],[MapPin,"Location",item.location],[Users,"Organizer",item.organizer]].map(([Icon,label,value])=>{const I=Icon as typeof CalendarDays;return <div className="flex gap-3" key={String(label)}><I className="shrink-0 text-brand" size={18}/><div><p className="muted text-xs">{String(label)}</p><p className="mt-1 font-semibold">{String(value)}</p></div></div>})}</div><button className="mt-8 w-full rounded-xl bg-brand py-3 text-sm font-bold text-white">Add to calendar</button></aside></div><section className="mt-16"><h2 className="text-2xl font-bold">More events</h2><div className="mt-6 grid gap-5 md:grid-cols-3">{events.filter(x=>x.id!==item.id).slice(0,3).map(x=><EventCard item={x} key={x.id}/>)}</div></section></article>}
+import { events } from "@/data/events";
+import { notFound } from "next/navigation";
+
+export function generateStaticParams() {
+  return events.map((event) => ({
+    id: String(event.id),
+  }));
+}
+
+export default async function EventPage({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) {
+  const { id } = await params;
+  const event = events.find((e) => String(e.id) === id);
+  if (!event) notFound();
+
+  return (
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-3xl font-bold">{event.title}</h1>
+      <p className="text-gray-500 mt-2">{event.date}</p>
+      <p className="mt-4">{event.description}</p>
+    </div>
+  );
+}

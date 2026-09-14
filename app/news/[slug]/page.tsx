@@ -1,3 +1,26 @@
-"use client";
-import Link from "next/link"; import { useParams } from "next/navigation"; import { ArrowLeft } from "lucide-react"; import { news } from "@/data/news"; import { FavoriteButton, NewsCard, formatDate } from "@/components/ui";
-export default function NewsDetail(){const {slug}=useParams<{slug:string}>();const item=news.find(x=>x.slug===slug);if(!item)return <main className="container-site section-space"><h1 className="text-3xl font-bold">Article not found</h1><Link className="mt-5 inline-flex text-brand" href="/news">Back to news</Link></main>;const related=news.filter(x=>x.category===item.category&&x.id!==item.id).slice(0,3);return <article className="container-site py-12 md:py-18"><Link href="/news" className="mb-8 inline-flex items-center gap-2 text-sm font-bold text-brand"><ArrowLeft size={16}/>All news</Link><div className="mx-auto max-w-4xl"><div className="flex items-center gap-3 text-xs"><span className="rounded-full bg-sky px-3 py-1 font-bold text-brand dark:bg-brand/20">{item.category}</span><span className="muted">{formatDate(item.date)} · {item.author}</span></div><h1 className="mt-5 text-4xl font-bold leading-tight tracking-tight md:text-6xl">{item.title}</h1><p className="muted mt-6 max-w-3xl text-lg leading-8">{item.excerpt}</p><div className="relative mt-9 h-72 overflow-hidden rounded-3xl image-shade md:h-[440px]"><img src={item.image} alt="" className="h-full w-full object-cover opacity-80"/><div className="absolute right-5 top-5"><FavoriteButton type="news" id={item.id}/></div></div><div className="prose-academic mx-auto mt-10 max-w-2xl">{item.content.map((p,i)=><p key={i}>{p}</p>)}<h2>A community effort</h2><p>We believe excellent technology is made through attentive collaboration. This is one story in the larger work of the SOICT community.</p></div></div>{related.length>0&&<section className="mt-16"><h2 className="text-2xl font-bold">Related news</h2><div className="mt-6 grid gap-5 md:grid-cols-3">{related.map(x=><NewsCard item={x} key={x.id}/>)}</div></section>}</article>}
+import { news } from "@/data/news";
+import { notFound } from "next/navigation";
+
+export function generateStaticParams() {
+  return news.map((item: any) => ({
+    slug: String(item.slug || item.id),
+  }));
+}
+
+export default async function NewsDetailPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+  const item: any = news.find((n: any) => String(n.slug || n.id) === slug);
+  if (!item) notFound();
+
+  return (
+    <div className="container mx-auto py-10 px-4">
+      <h1 className="text-3xl font-bold">{item.title}</h1>
+      <p className="text-gray-500 mt-2">{item.date}</p>
+      <div className="mt-4">{item.content || item.excerpt || ""}</div>
+    </div>
+  );
+}
