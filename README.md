@@ -1,6 +1,10 @@
-# SOICT academic portal
+# SoICT frontend clone
 
-A frontend-only Next.js experience inspired by an academic technology school website. All content is typed mock data under `data/`; no API, database, authentication service, or backend is used.
+Local, frontend-only recreation of the public SoICT website. It reproduces the visual hierarchy, responsive navigation, page templates, local routing, language switch, carousel-style hero, listings, people cards, pagination controls, and a back-to-top control.
+
+## Technology
+
+React with Vite and a single responsive CSS stylesheet. No backend, database, or API server is required.
 
 ## Run locally
 
@@ -9,20 +13,18 @@ npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+The project configures its npm cache inside `work/npm-cache`, so installation does not depend on a machine-wide npm cache.
 
-For a production check:
+Build a production bundle with:
 
 ```bash
 npm run build
-npm start
 ```
 
-## Included interactions
+## Routing and content
 
-- Persistent light/dark mode and news/event bookmarks through `localStorage`
-- Responsive sticky navigation and mobile drawer
-- News search, category filtering, sorting, pagination, article details
-- Event search and filters, event details, add-to-calendar affordance
-- People/program search and filters, people and program details
-- Global multi-content search, research detail panels, contact form confirmation
+The application uses browser paths directly, including Vietnamese routes such as `/dao-tao/gioi-thieu-chung` and English counterparts beneath `/en/`. Common listing, information, article, and staff templates are selected based on the current path. Menu, page labels, current public news, and event data are held in `src/data.js`.
+
+## Assets and language
+
+Source-derived logo, banner, news imagery, footer image, and local font files are in `public/assets/`. The language control switches between `/` and `/en/`; English navigation wording was collected from the official public English site.
